@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+    title: Users API
+    version: 1.0.0
+    description: Documentación del módulo Users con Swagger
+
+paths:
+    /api/users/:
+        get:
+            summary: Obtiene todos los usuarios
+            tags:
+                - Users
+            responses:
+                '200':
+                    description: Lista de usuarios obtenida con éxito.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        example: success
+                                    payload:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/User'
+
+    /api/users/{uid}:
+        get:
+            summary: Obtiene un usuario por ID
+            tags:
+                - Users
+            parameters:
+                - in: path
+                  name: uid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID del usuario
+            responses:
+                '200':
+                    description: Usuario encontrado.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        example: success
+                                    payload:
+                                        $ref: '#/components/schemas/User'
+                '404':
+                    description: Usuario no encontrado.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        example: error
+                                    error:
+                                        type: string
+                                        example: 'User not found'
+
+        put:
+            summary: Actualiza un usuario
+            tags:
+                - Users
+            parameters:
+                - in: path
+                  name: uid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID del usuario a actualizar
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UserUpdate'
+            responses:
+                '200':
+                    description: Usuario actualizado con éxito.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        example: success
+                                    message:
+                                        type: string
+                                        example: 'User updated'
+                '404':
+                    description: Usuario no encontrado.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        example: error
+                                    error:
+                                        type: string
+                                        example: 'User not found'
+
+        delete:
+            summary: Elimina un usuario
+            tags:
+                - Users
+            parameters:
+                - in: path
+                  name: uid
+                  required: true
+                  schema:
+                      type: string
+                  description: ID del usuario a eliminar
+            responses:
+                '200':
+                    description: Usuario eliminado con éxito.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        example: success
+                                    message:
+                                        type: string
+                                        example: 'User deleted'
+
+components:
+    schemas:
+        User:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: '64f2c3b3f3e4b8a7e4e7c0f9'
+                first_name:
+                    type: string
+                    example: 'Juan'
+                last_name:
+                    type: string
+                    example: 'Pérez'
+                email:
+                    type: string
+                    example: 'juanperez@example.com'
+                role:
+                    type: string
+                    example: 'user'
+                pets:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            _id:
+                                type: string
+                                example: '64f2c3b3f3e4b8a7e4e7c1a3'
